@@ -1,6 +1,15 @@
 {
   "name": "ProjetProgrammationFonctionnelle",
   "version": "1.0.0",
+  "description": "",
+  "main": "demineur.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "ramda": "^0.29.0"
   }
