@@ -16,3 +16,21 @@ function generateEmptyGrid(rows, cols) {
     }
     return grid;
 }
+
+function placeMines(grid, mineCount) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    let minesPlaced = 0;
+
+    while (minesPlaced < mineCount) {
+        const randomRow = Math.floor(Math.random() * rows);
+        const randomCol = Math.floor(Math.random() * cols);
+
+        if (!grid[randomRow][randomCol].isMine) {
+            grid[randomRow][randomCol].isMine = true;
+            minesPlaced++;
+        }
+    }
+
+    return grid;
+}
