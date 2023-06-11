@@ -34,3 +34,4 @@ function placeMines(grid, mineCount) {
 
     return grid;
 }
+
