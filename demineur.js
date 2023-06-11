@@ -68,3 +68,20 @@ function countAdjacentMines(grid) {
     return count;
 
 }
+
+
+function printGrid(grid) {
+    for (let row = 0; row < grid.length; row++) {
+        let rowStr = "";
+        for (let col = 0; col < grid[row].length; col++) {
+            const cell = grid[row][col];
+            if (cell.isDiscovered) {
+                rowStr += cell.adjacentMines !== 0 ? cell.adjacentMines : "_";
+            } else {
+                rowStr += "-";
+            }
+            rowStr += " ";
+        }
+        console.log(rowStr);
+    }
+}
