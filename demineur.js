@@ -115,3 +115,28 @@ function revealCell(grid, row, col,revealedCells) {
 
 }
 
+function getUnrevealedNeighbors(grid, row, col) {
+    const neighbors = [];
+    const rows = grid.length;
+    const cols = grid[0].length;
+
+    for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+            const newRow = row + i;
+            const newCol = col + j;
+            if (
+                newRow >= 0 &&
+                newRow < rows &&
+                newCol >= 0 &&
+                newCol < cols &&
+                !(i === 0 && j === 0) && // Exclure la cellule courante
+                !grid[newRow][newCol].isDiscovered
+            ) {
+                neighbors.push({ row: newRow, col: newCol });
+            }
+        }
+    }
+
+    return neighbors;
+}
+
