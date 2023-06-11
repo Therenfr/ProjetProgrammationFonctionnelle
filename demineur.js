@@ -85,3 +85,33 @@ function printGrid(grid) {
         console.log(rowStr);
     }
 }
+
+function revealCell(grid, row, col,revealedCells) {
+    const cell = grid[row][col];
+    if (cell.isDiscovered || cell.isMine) {
+        return;
+    }
+    if (cell.adjacentMines === 0) {
+        const rows = grid.length;
+        const cols = grid[0].length;
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                const newRow = row + i;
+                const newCol = col + j;
+                if (
+                    newRow >= 0 &&
+                    newRow < rows &&
+                    newCol >= 0 &&
+                    newCol < cols &&
+                    !(i === 0 && j === 0) // Exclure la cellule courante
+                ) {
+                    revealCell(grid, newRow, newCol);
+                }
+            }
+        }
+    }
+    revealedCells++;
+    grid = R.assocPath([row, col, "isDiscovered"], true, grid);
+
+}
+
