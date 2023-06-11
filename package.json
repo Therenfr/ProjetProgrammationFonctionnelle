@@ -1,0 +1,7 @@
+{
+  "name": "ProjetProgrammationFonctionnelle",
+  "version": "1.0.0",
+  "dependencies": {
+    "ramda": "^0.29.0"
+  }
+}
