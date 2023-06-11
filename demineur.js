@@ -35,3 +35,36 @@ function placeMines(grid, mineCount) {
     return grid;
 }
 
+// Fonction pour compter le nombre de mines adjacentes à chaque case
+function countAdjacentMines(grid) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+
+    const isValidCell = (row, col) => {
+        return row >= 0 && row < rows && col >= 0 && col < cols;
+    };
+
+    const count = (row, col) => {
+        let count = 0;
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                const newRow = row + i;
+                const newCol = col + j;
+                if (isValidCell(newRow, newCol) && grid[newRow][newCol].isMine) {
+                    count++;
+                }
+            }
+        }
+        return count; // Correction : renvoyer le compteur de mines
+    };
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            if (!grid[row][col].isMine) {
+                grid[row][col].adjacentMines = count(row, col);
+            }
+        }
+    }
+    return count;
+
+}
