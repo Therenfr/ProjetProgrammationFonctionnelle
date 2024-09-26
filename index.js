@@ -140,3 +140,126 @@ function getUnrevealedNeighbors(grid, row, col) {
     return neighbors;
 }
 
+function solveMinesweeper(grid) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+
+    let revealedCells = 0;
+
+    const revealCell = (row, col) => {
+        const cell = grid[row][col];
+        if (cell.isDiscovered || cell.isMine) {
+            return;
+        }
+        if (cell.adjacentMines === 0) {
+            const rows = grid.length;
+            const cols = grid[0].length;
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    const newRow = row + i;
+                    const newCol = col + j;
+                    if (
+                        newRow >= 0 &&
+                        newRow < rows &&
+                        newCol >= 0 &&
+                        newCol < cols &&
+                        !(i === 0 && j === 0) // Exclure la cellule courante
+                    ) {
+                        revealCell(newRow, newCol);
+                    }
+                }
+            }
+        }
+        cell.isDiscovered = true;
+        revealedCells++;
+    };
+
+    const revealSafeCell = () => {
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                const cell = grid[row][col];
+                if (!cell.isDiscovered && !cell.isMine) {
+                    revealCell(row, col);
+                    if (revealedCells === rows * cols) {
+                        return true;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    const revealNeighbors = () => {
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                const cell = grid[row][col];
+                if (cell.isDiscovered && !cell.isMine && cell.adjacentMines > 0) {
+                    const unrevealedNeighbors = getUnrevealedNeighbors(grid, row, col);
+                    if (unrevealedNeighbors.length === cell.adjacentMines) {
+                        unrevealedNeighbors.forEach((neighbor) => {
+                            revealCell(neighbor.row, neighbor.col);
+                        });
+                    }
+                }
+            }
+        }
+    };
+
+    while (true) {
+        const revealed = revealSafeCell();
+        revealNeighbors();
+
+        printGrid(grid);
+        console.log("---------------------");
+
+        if (!revealed) {
+            break;
+        }
+    }
+
+    return grid;
+}
+
+function printGridWithMines(grid) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+
+    const getCellValue = (cell) => {
+        if (cell.isMine) {
+            return "x";
+        } else if (cell.adjacentMines > 0) {
+            return cell.adjacentMines.toString();
+        } else {
+            return "_";
+        }
+    };
+
+    const rowStrings = grid.map((row) => row.map(getCellValue).join(" "));
+    const gridString = rowStrings.join("\n");
+
+    console.log(gridString);
+}
+
+
+// Génération de la grille vide
+const grid = generateEmptyGrid(rows, cols);
+
+// Placement des mines aléatoirement
+placeMines(grid, mineCount);
+
+// Calcul du nombre de mines adjacentes à chaque case
+
+countAdjacentMines(grid);
+
+
+console.log("Grille initiale avec les bombes :");
+printGridWithMines(grid);
+
+console.log("Grille initiale :");
+printGrid(grid);
+
+// Résolution automatique de la grille
+console.log("Grille résolue :");
+const solvedGrid = solveMinesweeper(grid);
+printGrid(solvedGrid);
